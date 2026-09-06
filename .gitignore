@@ -1,4 +1,27 @@
+# build / python cruft
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+build/
+dist/
 .DS_Store
+
+# runtime artifacts -- never commit captures, hashes, credentials, or DBs
+logs/*
+!logs/.gitkeep
+*.db
+*.jsonl
+*.potfile
+*.cap
+*.cap.gz
+*.pcap
+*.pcapng
+*.hccap
+*.hccapx
+*.hc22000
+*.hc16800
+
+# local overrides
+config.local.yaml
+config/*.local.yaml

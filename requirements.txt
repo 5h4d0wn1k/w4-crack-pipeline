@@ -1,0 +1,4 @@
+# W4 -- crack pipeline runtime dependencies.
+# PyYAML is the only third-party runtime dependency (config parsing);
+# everything else is the Python standard library.
+PyYAML>=5.4

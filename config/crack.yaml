@@ -1,0 +1,47 @@
+# W4 -- crack pipeline configuration.
+#
+# Every network identifier below is a DOCUMENTATION LAB PLACEHOLDER
+# (RFC 5737 range 192.0.2.0/24, example MACs 00:11:22:33:44:55, example SSIDs
+# "lab-ap" / "lab-guest"). This repo ships private and cracks OWN-lab traffic
+# only -- never replace these placeholders with real-world identifiers.
+
+tools:
+  hcxdumptool: hcxdumptool      # capture utility (hcxtools) -- optional for the pipeline
+  hcxpcapngtool: hcxpcapngtool  # pcap -> hc22000 converter and handshake/PMKID detector
+  hashcat: hashcat              # cracking engine (required)
+  aircrack: aircrack-ng         # handshake detection fallback
+
+# Wordlist / rules. Defaults are the classic rockyou + hashcat best64.
+# Relative paths below resolve against the directory the CLI is run from
+# (run from the repo root so logs/ stays inside the repository).
+wordlist: /usr/share/wordlists/rockyou.txt
+rules: /usr/share/hashcat/rules/best64.rule
+
+hashcat:
+  mode: 22000       # WPA-PBKDF2 PMKID+EAPOL (handles both PMKID and 4-way handshakes)
+  workload: 3       # hashcat -w: 1 low .. 4 insane
+  devices: ""       # optional hashcat -D (""/empty = auto device selection)
+  status_timer: 5   # seconds between hashcat status lines (drives progress logging)
+  potfile: logs/crack.potfile
+  extra: []         # extra hashcat flags, e.g. ["--optimized-kernel-enable"]
+
+capture:
+  # Allow a specific uid/username (in addition to the current user) to own
+  # captures. null (default) = owner must be the process user, OR the filename
+  # must contain the lab marker below (own-lab captures are usually named e.g.
+  # lab-ap-client.cap).
+  allowed_owner: null
+  marker: lab
+
+db:
+  path: logs/results.db      # SQLite results database -- gitignored
+  jsonl: logs/results.jsonl  # JSONL sidecar -- gitignored
+
+workdir: logs/work           # per-run scratch (converted hashes, ...) -- gitignored
+
+network:                     # DOCUMENTATION PLACEHOLDERS ONLY -- never real identifiers
+  documentation_range: 192.0.2.0/24
+  example_ssids: ["lab-ap", "lab-guest"]
+  example_macs:
+    - "00:11:22:33:44:55"
+    - "00:11:22:33:44:66"
