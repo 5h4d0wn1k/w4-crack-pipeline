@@ -190,7 +190,7 @@ class Toolchain:
                 f"external tool not found while invoking: {exc.filename}"
             ) from exc
         except OSError as exc:
-            raise ToolMissing(f"failed to execute {executable}: {exc}") from exc
+            raise ToolMissing(f"failed to execute {argv[0]}: {exc}") from exc
 
         elapsed = time.monotonic() - start
         stdout = "".join(stdout_buf)
